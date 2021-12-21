@@ -1,0 +1,21 @@
+@import "./colors";
+
+.footerContainer {
+  position: sticky;
+  /* background-color: '#ffffff00'; */
+  bottom: 0;
+  z-index: 9999;
+  padding: 10px;
+  display: flex;
+  justify-content: right;
+  align-content: space-between;
+}
+
+.bugButton {
+  font-size: .75em;
+  padding: 8px;
+  border-radius: 20px;
+  color:$text;
+  background-color: $background;
+  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+}

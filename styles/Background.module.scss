@@ -1,0 +1,38 @@
+/* background styling */
+.ovalContainer {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    overflow: hidden;
+  }
+  
+  .ovalLeft {
+    left: 246px;
+    top: -0.37px;
+    height: 1452.37px;
+    width: 865.27px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #a463b0 0%, #e3935b 100%);
+    opacity: 0.5;
+    filter: blur(200px);
+    transform: rotate(-30deg);
+  }
+  
+  .ovalRight {
+    left: 246px;
+    top: -0.37px;
+    height: 1452.37px;
+    width: 865.27px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #a463b0 0%, #5f8afa 100%);
+    opacity: 0.5;
+    filter: blur(200px);
+    transform: rotate(-30deg);
+  }

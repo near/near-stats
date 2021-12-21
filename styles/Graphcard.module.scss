@@ -1,0 +1,35 @@
+@import "./colors";
+
+.cardlogo {
+  width: 32px;
+  height: auto;
+  margin: 10px;
+}
+
+.share {
+  width: 24px;
+  height: auto;
+}
+
+.switchContainer {
+  height: 30px;
+  text-align: right;
+}
+
+.iconButton {
+  border: hidden;
+  background: none;
+  cursor: pointer;
+  padding-left:30px;
+}
+
+.cardContainer {
+  box-sizing: border-box;
+  padding: 0.5%;
+}
+
+.cardInner {
+  background-color: $background;
+  box-shadow: 0px 4px 5px 0px rgb(0 0 0 / 30%);
+  padding: 20px 20px 30px 20px;
+}

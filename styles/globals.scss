@@ -1,0 +1,189 @@
+@import "./colors";
+
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/manrope/Manrope-Regular.ttf");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/manrope/Manrope-Medium.ttf");
+  font-style: medium;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/manrope/Manrope-Bold.ttf");
+  font-style: bold;
+  font-weight: 700;
+  font-display: swap;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Manrope, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  color: $text;
+  background-color: $background;
+}
+
+svg text {
+  font-family: Manrope, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+text {
+  fill: $text;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h3 {
+  font-size: 0.9em;
+}
+
+/* visualization styles */
+
+rect.selection {
+  fill: rgba(167, 167, 167, 0.2);
+}
+.transition-all {
+  transition: all 0.5s ease-in-out;
+}
+
+.round-image {
+  border-radius: 50%;
+}
+
+/* content and card styling */
+.graphs-layout {
+  position: absolute;
+  width: 100%;
+}
+
+/* card sizing */
+.full {
+  width: 100%;
+}
+
+.half {
+  width: 50%;
+}
+
+/* Global flex container settings */
+.global-flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.global-flex-inner {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.global-flex-inner-left {
+  justify-content: left;
+}
+
+.global-flex-inner-center {
+  justify-content: center;
+}
+
+.global-flex-inner-right {
+  justify-content: right;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .half {
+    width: 100%;
+  }
+
+  .global-flex-inner {
+    align-content: space-around;
+    width: 100%;
+  }
+
+  .global-spacer{
+    flex-grow: 1;
+  }
+
+  .title-container {
+    width: 100%;
+    padding: 10px 0 10px 0;
+  }
+}
+
+.tooltip-box {
+  fill: $background;
+  filter: $shadow;
+}
+
+.app-label-box {
+  fill: $background;
+}
+
+.watermark svg {
+  fill: $text;
+}
+
+.react_select__control {
+  border-radius: 20px;
+  background-color: $select-background;
+  font-size: 13px;
+  fill: 'white';
+  min-height: 20px;
+ }
+
+ .react_select__single-value {
+  color: $text;
+  width: "max-content";
+  min-width: 100%;
+}
+
+.react_select__dropdown-indicator {
+  padding: 3px;
+}
+
+.react_select__menu {
+  background-color: $background;
+  font-size: 13px;
+}
+
+.react_select__option:hover {
+  background-color: $select-hover;
+}
+
+.react_select__option--is-selected, .react_select__option--is-selected:hover{
+  background-color: #5F8AFA;
+}
+
+.react_select__multi-value {
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+.react_select__multi-value__remove:hover {
+  border-radius: 20px;
+  background-color: #A463B0;
+  color: white;
+}

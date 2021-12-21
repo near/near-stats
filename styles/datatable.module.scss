@@ -1,0 +1,62 @@
+@import "./colors";
+
+.table_container {
+  background-color: $background;
+}
+
+.table_row {
+  border-color: $border;
+}
+
+.table_row:last-child td, .table_row:last-child th {
+  border-bottom: 0px;
+} 
+
+.table_cell_header {
+  font-weight: 800;
+  font-family: "Manrope";
+  color: $text;
+}
+
+.table_sort_label, .table_sort_label:hover {
+  color: $text !important
+}
+
+.table_sort_label > svg {
+  color: inherit !important
+}
+
+.table_cell_app, .table_cell_total_accounts, .table_cell_total_accounts_bar,
+.table_cell_change, .table_cell_change_arrow  {
+  font-weight: 400;
+  font-family: "Manrope"; 
+  border-color: $border;
+  color: $text;
+}
+
+.table_cell_app {
+  border-right: 1px; 
+}
+
+.table_cell_total_accounts {
+  padding-left: 5%;
+  padding-right: 0px; 
+  border-right: 0px;
+}
+
+.table_cell_total_accounts_bar {
+  padding-left: 0;
+  padding-right: 0px; 
+  border-right: 1px;
+}
+
+.table_cell_change {
+  padding-left: 3%;
+  padding-right: 0px; 
+  border-right: 0px;
+}
+
+.table_cell_change_arrow{
+  padding-left: 0;
+  border-right: 1px;
+}
