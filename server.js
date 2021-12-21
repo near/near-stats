@@ -409,10 +409,8 @@ app.prepare().then(async () => {
   const neatCsv = require('neat-csv');
   const fs = require('fs').promises;
 
-  let accounts_csv_data = await fs.readFile('./data/new_accounts_per_app.csv', "binary")
+  let accounts_csv_data = await fs.readFile('./data/daily_new_entity_users_count.csv', "binary")
   let new_accounts_per_app = await neatCsv(accounts_csv_data)
-
-  new_accounts_per_app = new_accounts_per_app.filter(d => d.app != 'All Others')
   
   let ecosystem_csv_data = await fs.readFile('./data/ecosystem_entities.csv', "binary")
   let ecosystem_data = await neatCsv(ecosystem_csv_data)
@@ -420,7 +418,10 @@ app.prepare().then(async () => {
 
   // wrangle
   new_accounts_per_app.forEach(d => {
-    d.new_accounts_count = parseInt(d.new_accounts_count)
+    d.app = d.entity_id
+    delete d.entity_id
+    d.new_accounts_count = parseInt(d.new_entity_accounts_count)
+    delete d.new_entity_accounts_count
     d.collected_for_day = new Date(d.collected_for_day).toISOString()
   });
 
