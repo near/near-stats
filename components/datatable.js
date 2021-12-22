@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import * as d3 from "d3";
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
@@ -12,6 +12,7 @@ import Paper from '@mui/material/Paper';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import TablePagination from '@mui/material/TablePagination'
 import { visuallyHidden } from '@mui/utils';
 import Image from 'next/image'
 import styles from '../styles/datatable.module.scss'
@@ -26,6 +27,11 @@ function descendingComparator(a, b, orderBy) {
     return 1;
   }
   return 0;
+}
+
+//number formatting function
+function formatNumber(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 function getComparator(order, orderBy) {
@@ -137,6 +143,21 @@ EnhancedTableHead.propTypes = {
 };
 
 function Datatable({ data = [], app_data = [], name = '_name', accounts = '_accounts', thirty = '_thirty', ninety = '_ninety'}) {
+  
+  //declare states for pagination
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setrowsPerPage] = useState(10)
+
+  //declare pagination handlers
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+  }
+  
+  const handleChangeRowsPerPage = (event) => {
+    setrowsPerPage(+event.target.value)
+    setPage(0)
+  }
+  
   const svgRef = React.useRef();
 
   let app_lookup = {}
@@ -192,7 +213,7 @@ function Datatable({ data = [], app_data = [], name = '_name', accounts = '_acco
             onRequestSort={handleRequestSort}
           />
           <TableBody className="table_body">
-            {stableSort(data, getComparator(order, orderBy)).map((row) => (
+            {stableSort(data, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
               <TableRow
                 tabIndex={-1}
                 key={row[name]}
@@ -203,7 +224,7 @@ function Datatable({ data = [], app_data = [], name = '_name', accounts = '_acco
 
                 </TableCell>
                 <TableCell align="left" className={styles.table_cell_total_accounts}>
-                  {row[accounts]}
+                  {formatNumber(row[accounts])}
                 </TableCell>
                 <TableCell align="left" className={styles.table_cell_total_accounts_bar} >
                   <svg ref={svgRef} width="60%" viewBox={'0 0 ' + svgWidth + ' ' + svgHeight} style={{ marginRight: `20%` }}>
@@ -231,6 +252,16 @@ function Datatable({ data = [], app_data = [], name = '_name', accounts = '_acco
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10]}
+        component="div"
+        count={data.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        className={styles.table_cell_change}
+      />
     </React.Fragment>
   )
 }
