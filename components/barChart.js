@@ -170,6 +170,12 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `app
                 setTooltip({visible:false, data:{}, x: event.pageX, y: event.pageY})
             })
 
+        function growth(total, added) {
+            if (added) {
+                return `+ ${Math.floor((total - added) / added * 100)}`
+            } else { return ' - ' }
+            }
+
         // add growth %/# label to end of bar
         svgContent
             .selectAll(".growth-text")
@@ -177,7 +183,7 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `app
             .join('text')
             .attr('x', d => xScale(d[x])+ 5)
             .attr('y', d => yScale(d[y]) + yScale.bandwidth() / 2 + 4)
-            .text(d => label_type === 'Percent' ? '+' + Math.floor((d[x] - d[compare]) / d[compare] * 100) + '%' : '+'+formatNumber(d[x]-d[compare]))
+            .text(d => label_type === 'Percent' ? growth(d[x],d[compare]) + '%' : '+'+formatNumber(d[x]-d[compare]))
             .attr('class', 'growth-text')
             .attr('font-size', '0.7em')
             .attr('text-anchor', 'left') 
