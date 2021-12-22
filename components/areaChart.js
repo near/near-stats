@@ -337,7 +337,7 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
         // resize box to fit label
         top_app_group
             .selectAll('rect')
-            .attr('width',d => top_app_group.select("#id"+d[0]).node().getComputedTextLength()+20);
+            .attr('width',d => top_app_group.select("#id"+d[0]).node().getComputedTextLength()+10);
 
         // axes
         // scale x axis

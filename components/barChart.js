@@ -43,6 +43,10 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `app
     const width = svgWidth - margin.left - margin.right
 
     React.useEffect(() => {
+        //number formatting function
+        function formatNumber(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
 
         // set d3 references
         const svg = d3.select(svgRef.current);
@@ -128,14 +132,19 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `app
             .attr("opacity", 1)
             .on("mouseover", (event,d) => {
                 let data = {
-                    [d.app]:"",
-                    'Total Accounts' : d.total_accounts
+                    [app_lookup[d.app].title]:"",
+                    'Total Accounts' : formatNumber(d.total_accounts),
+                    [`Created in the Last ${compare.split('_')[3]} Days`] : formatNumber(d[x] - d[compare])
                 }
                 setTooltip({visible:true, data:data, x: event.pageX, y: event.pageY})
             })
             .on("mouseout", (event,d) => {
                 setTooltip({visible:false, data:{}, x: event.pageX, y: event.pageY})
             })
+        
+        // function compareLabel(compare){
+        //     return `Created in the Last ${compare.split('_')[3]} Days`
+        // }
 
         // draw growth bar with tooltip on hover
         svgContent
@@ -151,8 +160,9 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `app
             .attr("fill", "#7FADBC")
             .on("mouseover", (event,d) => {
                 let data = {
-                    [d.app]:"",
-                    [compare.replaceAll("_", " ")] : d[compare]
+                    [app_lookup[d.app].title]:"",
+                    'Total Accounts' : formatNumber(d.total_accounts),
+                    [`Created in the Last ${compare.split('_')[3]} Days`] : formatNumber(d[x] - d[compare])
                 }
                 setTooltip({visible:true, data:data, x: event.pageX, y: event.pageY})
             })
@@ -167,7 +177,7 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `app
             .join('text')
             .attr('x', d => xScale(d[x])+ 5)
             .attr('y', d => yScale(d[y]) + yScale.bandwidth() / 2 + 4)
-            .text(d => label_type === 'Percent' ? '+' + Math.floor((d[x] - d[compare]) / d[compare] * 100) + '%' : '+'+d[compare])
+            .text(d => label_type === 'Percent' ? '+' + Math.floor((d[x] - d[compare]) / d[compare] * 100) + '%' : '+'+formatNumber(d[x]-d[compare]))
             .attr('class', 'growth-text')
             .attr('font-size', '0.7em')
             .attr('text-anchor', 'left') 

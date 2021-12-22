@@ -490,8 +490,8 @@ app.prepare().then(async () => {
       })
 
       top_apps = Object.keys(top_apps).map((key) => [key, top_apps[key]]);
-      top_apps.sort((a, b) => a.cumulative_total_accounts < b.cumulative_total_accounts ? 1 : -1)
-      top_apps.filter((d,i) => i < limit)
+      top_apps.sort((a, b) => a[1] < b[1] ? 1 : -1)
+      top_apps = top_apps.filter((d,i) => i < limit)
       top_apps = top_apps.map(d => d[0])
       date_filtered = date_filtered.filter(d => top_apps.includes(d.app) )
     }
@@ -533,8 +533,8 @@ app.prepare().then(async () => {
       })
 
       top_apps = Object.keys(top_apps).map((key) => [key, top_apps[key]]);
-      top_apps.sort((a, b) => a.cumulative_total_accounts < b.cumulative_total_accounts ? 1 : -1)
-      top_apps.filter((d,i) => i < limit)
+      top_apps.sort((a, b) => a[1] < b[1] ? 1 : -1)
+      top_apps = top_apps.filter((d,i) => i < limit)
       top_apps = top_apps.map(d => d[0])
 
       wrangled = wrangled.filter(d => top_apps.includes(d.app) )
