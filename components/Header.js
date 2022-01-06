@@ -60,6 +60,7 @@ export default function Header({ setDateCompare, setNetwork }) {
                 {e.text}
               </div>
           )}
+          instanceId={'network'}
         />
       </div>
 
@@ -81,6 +82,7 @@ export default function Header({ setDateCompare, setNetwork }) {
           defaultValue={{ value: 30, label: '30 Days' }}
           onChange={handleChange}
           options={[{ value: 30, label: '30 Days' }, { value: 60, label: '60 days' }, { value: 90, label: '90 days' }]}
+          instanceId={'range'}
         />
         <div className="global-spacer"></div>
         <div className={styles.switchContainer}>

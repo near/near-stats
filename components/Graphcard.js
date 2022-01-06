@@ -68,6 +68,7 @@ export default function GraphCard({ icon, title, children, size = "full", setGoa
         placeholder="Goals"
         onChange={handleGoals}
         options={[{ value: 2000000, label: '2.0M' }, { value: 2500000, label: '2.5M' }, { value: 3000000, label: '3.0M' }]}
+        instanceId={title}
       />
 
     comp = title + ' (' + dateCompare + ' Day Growth)'
@@ -86,6 +87,7 @@ export default function GraphCard({ icon, title, children, size = "full", setGoa
         placeholder="Milestones"
         onChange={handleMilestones}
         options={[{ value: 10000, label: '10k' }, { value: 20000, label: '20k' }, { value: 30000, label: '30k' }, { value: 40000, label: '40k' }, { value: 50000, label: '50k' }, { value: 60000, label: '60k' }, { value: 70000, label: '70k' }]}
+        instanceId={title}
       />
     </>
 
@@ -103,6 +105,7 @@ export default function GraphCard({ icon, title, children, size = "full", setGoa
         defaultValue={{ value: false, label: 'Overview' }}
         onChange={handleDetail}
         options={[{ value: false, label: 'Overview' }, { value: true, label: 'Top 10' }]}
+        instanceId={title}
       />
     comp = title + ' (Last ' + dateCompare + ' Days)'
   } else if (title === 'NEAR Account Growth By App') {
@@ -118,6 +121,7 @@ export default function GraphCard({ icon, title, children, size = "full", setGoa
         defaultValue={{ value: false, label: 'Overview' }}
         onChange={handleDetail1}
         options={[{ value: false, label: 'Overview' }, { value: true, label: 'Top 10' }]}
+        instanceId={title}
       />
 
     comp = title + ' (Last ' + dateCompare + ' Days)'
