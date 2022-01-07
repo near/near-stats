@@ -16,14 +16,14 @@ function BrushChart({ data = [], x = '_x', y = '_y', children }) {
         // Regression generator
         const regressionGenerator = regressionPoly()
         .x(d => new Date(d.collected_for_day))
-        .y(d => d.cumulative_total_accounts)
+        .y(d => d.total_accounts)
 
         // Calculate future prediction based on regression
         let regression = regressionGenerator(data)
         let prediction_date = d3.timeDay.offset(new Date(), 90)
         let prediction = regression.predict(prediction_date)
         let regression_data = [...data]
-        regression_data.push({ 'collected_for_day': prediction_date.toISOString(), 'cumulative_total_accounts': prediction })
+        regression_data.push({ 'collected_for_day': prediction_date.toISOString(), 'total_accounts': prediction })
      
        setPredictionData(regression_data)
        setSelection([dateExtent[0], prediction_date]);

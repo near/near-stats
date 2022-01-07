@@ -81,7 +81,7 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
         let other_apps_line_data = stackedData[0].map(d => ({[x]: d.data[x], [y] : detail ? 0 : d[1]}) )
         let top_apps_line_data = stackedData[1].map(d => ({[x]: d.data[x], [y] : detail ? 0 : d[1]}) )
 
-        var stacked_apps = d3.groups(app_detail, d => d.app)
+        var stacked_apps = d3.groups(app_detail, d => d.entity_id)
 
         if (growth == true){
             stacked_apps.forEach(app => {
@@ -257,14 +257,14 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
                 top_data_point = top_apps_line_data.find( ({ collected_for_day }) => collected_for_day === hover_date.toISOString().split('T')[0]);
             
             if (other_data_point){
-            var y_value=parseFloat(other_data_point['cumulative_total_accounts']);
+            var y_value=parseFloat(other_data_point['total_accounts']);
             other_app_tooltip.attr("transform", "translate(" + xScale(new Date(other_data_point.collected_for_day)) + "," + yScale(y_value)+ ")"); 
             other_app_tooltip.select("text").text(formatNumbers(y_value));
             other_app_tooltip.select("rect").attr('width',other_app_tooltip.select("text").node().getComputedTextLength()+12)
             }
 
             if (top_data_point){
-            var y_value=parseFloat(top_data_point['cumulative_total_accounts']);
+            var y_value=parseFloat(top_data_point['total_accounts']);
             top_app_tooltip.attr("transform", "translate(" + xScale(new Date(top_data_point.collected_for_day)) + "," + yScale(y_value)+ ")"); 
             top_app_tooltip.select("text").text(formatNumbers(y_value));
             top_app_tooltip.select("rect").attr('width',top_app_tooltip.select("text").node().getComputedTextLength()+12)

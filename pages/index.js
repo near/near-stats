@@ -39,21 +39,21 @@ const Home = ({ total_accounts, app_summary, app_total, apps}) => {
             <div className={styles.gridContainer}>
               <div className="global-flex-container">
                 <GraphCard title="Total NEAR Accounts" size="half" icon='/images/Frametotalacc.png' setGoals={setGoals} dateCompare={date_compare}>
-                  <BrushChart data={total_accounts} x='collected_for_day' y='cumulative_total_accounts'>
-                    {options => <BrushedAreaChart data={options.data} prediction_data={options.prediction_data} x='collected_for_day' y='cumulative_total_accounts' compare={date_compare} selection={options.selection} goals={goals} setTooltip={setTooltip} />}
+                  <BrushChart data={total_accounts} x='collected_for_day' y='total_accounts'>
+                    {options => <BrushedAreaChart data={options.data} prediction_data={options.prediction_data} x='collected_for_day' y='total_accounts' compare={date_compare} selection={options.selection} goals={goals} setTooltip={setTooltip} />}
                   </BrushChart>
                 </GraphCard>
                 <GraphCard title="Top NEAR Apps" size="half" icon='/images/Frametopapps.png' setMilestones={setMilestones} label_type={label} setLabel={setLabel} dateCompare={date_compare}>
-                  <BarChart data={app_summary} app_data={apps} x='total_accounts' y='app' compare={`app_accounts_last_${date_compare}_days`} goals={milestones} setTooltip={setTooltip} label_type={label} />
+                  <BarChart data={app_summary} app_data={apps} x='total_accounts' y='entity_id' compare={`accounts_${date_compare}_days_ago`} goals={milestones} setTooltip={setTooltip} label_type={label} />
                 </GraphCard>
                 <GraphCard title="Total NEAR Accounts by App" size="half" icon='/images/Frametotalaccbyapp.png' setDetail={setDetail} dateCompare={date_compare}>
-                  <AreaChart account_data={total_accounts} app_data={app_total} x='collected_for_day' y='cumulative_total_accounts' compare={date_compare} detail={detail} setTooltip={setTooltip} />
+                  <AreaChart account_data={total_accounts} app_data={app_total} x='collected_for_day' y='total_accounts' compare={date_compare} detail={detail} setTooltip={setTooltip} />
                 </GraphCard>
                 <GraphCard title="NEAR Account Growth By App" size="half" icon='/images/Framenewaccbyapp.png' setDetail1={setDetail1} dateCompare={date_compare}>
-                  <AreaChart account_data={total_accounts} app_data={app_total} growth={true} x='collected_for_day' y='cumulative_total_accounts' compare={date_compare} detail={detail1} setTooltip={setTooltip} />
+                  <AreaChart account_data={total_accounts} app_data={app_total} growth={true} x='collected_for_day' y='total_accounts' compare={date_compare} detail={detail1} setTooltip={setTooltip} />
                 </GraphCard>
                 <GraphCard title="Near App Momentum" icon='/images/Frameappmomentum.png'>
-                  <Datatable data={app_summary} app_data={apps} accounts='total_accounts' name='app' thirty="app_accounts_last_30_days" ninety="app_accounts_last_90_days" />
+                  <Datatable data={app_summary} app_data={apps} accounts='total_accounts' name='entity_id' thirty="accounts_30_days_ago" ninety="accounts_90_days_ago" />
                 </GraphCard>
               </div>
             </div>
@@ -65,13 +65,13 @@ const Home = ({ total_accounts, app_summary, app_total, apps}) => {
 }
 export async function getServerSideProps() {
 
-  let total_accounts = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v1/mainnet/accounts/total?end=11%2F21%2F21`)
+  let total_accounts = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v1/mainnet/accounts/total`)
   total_accounts = await total_accounts.json()
-  let app_summary = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v0/mainnet/apps/accounts/summary`)
+  let app_summary = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v1/mainnet/apps/accounts/summary`)
   app_summary = await app_summary.json()
-  let app_total = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v0/mainnet/apps/accounts/total?end=11%2F21%2F21&limit=10`)
+  let app_total = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v1/mainnet/apps/accounts/total`)
   app_total = await app_total.json()
-  let apps = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v1/mainnet/apps/`)
+  let apps = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v1/mainnet/apps?contract=true`)
   apps = await apps.json()
   if (!total_accounts || !app_summary || !app_total || !apps) {
     return {

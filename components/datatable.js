@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import * as d3 from "d3";
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
@@ -96,7 +96,7 @@ const headCells = [
     disableSort: true,
     label: '',
   }
-]; 
+];
 
 // Table Header
 function EnhancedTableHead(props) {
@@ -142,8 +142,8 @@ EnhancedTableHead.propTypes = {
   orderBy: PropTypes.string.isRequired
 };
 
-function Datatable({ data = [], app_data = [], name = '_name', accounts = '_accounts', thirty = '_thirty', ninety = '_ninety'}) {
-  
+function Datatable({ data = [], app_data = [], name = '_name', accounts = '_accounts', thirty = '_thirty', ninety = '_ninety' }) {
+
   //declare states for pagination
   const [page, setPage] = useState(0)
   const [rowsPerPage, setrowsPerPage] = useState(10)
@@ -152,12 +152,12 @@ function Datatable({ data = [], app_data = [], name = '_name', accounts = '_acco
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
   }
-  
+
   const handleChangeRowsPerPage = (event) => {
     setrowsPerPage(+event.target.value)
     setPage(0)
   }
-  
+
   const svgRef = React.useRef();
 
   let app_lookup = {}
@@ -170,7 +170,7 @@ function Datatable({ data = [], app_data = [], name = '_name', accounts = '_acco
     } else { return ' - ' }
   }
 
-  data.forEach(function(d){
+  data.forEach(function (d) {
     d["thirty_d"] = growth(d[accounts], d[thirty])
     d["ninety_d"] = growth(d[accounts], d[ninety])
   });
@@ -203,7 +203,7 @@ function Datatable({ data = [], app_data = [], name = '_name', accounts = '_acco
   };
 
   return (
-    
+
     <React.Fragment>
       <TableContainer component={Paper} className={styles.table_container}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -221,7 +221,6 @@ function Datatable({ data = [], app_data = [], name = '_name', accounts = '_acco
 
                 <TableCell className={styles.table_cell_app} >
                   <a href={app_lookup[row[name]].website} target='_blank' rel="noreferrer"><Image src={app_lookup[row[name]].logo} alt={app_lookup[row[name]].title + ' logo'} width={25} height={25} className="round-image"></Image></a><span style={{marginLeft:'10%'}}>{app_lookup[row[name]].title}</span>
-
                 </TableCell>
                 <TableCell align="left" className={styles.table_cell_total_accounts}>
                   {formatNumber(row[accounts])}
@@ -241,7 +240,7 @@ function Datatable({ data = [], app_data = [], name = '_name', accounts = '_acco
                 <TableCell align="left" className={styles.table_cell_change_arrow}>
                   {growthArrow(row["thirty_d"])}
                 </TableCell>
-                <TableCell align="left"  className={styles.table_cell_change}>
+                <TableCell align="left" className={styles.table_cell_change}>
                   {row["ninety_d"] + '%'}
                 </TableCell>
                 <TableCell align="left" className={styles.table_cell_change_arrow}>
