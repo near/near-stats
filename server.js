@@ -211,8 +211,6 @@ app.prepare().then(async () => {
     const app = req.query.app ? req.query.app : null
     const contract = req.query.contract ? req.query.contract : false // must have contract_ids
 
-    console.log(app, contract)
-
     // dates split to create postgres format
     let query = `
       select
