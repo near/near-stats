@@ -9,7 +9,7 @@ function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y',
     const margin = {
         left: 110,
         right: 70,
-        top: 0,
+        top: 20,
         bottom: 50
     }
 
@@ -178,7 +178,7 @@ function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y',
             var data_point = data.find( ({ collected_for_day }) => collected_for_day.split('T')[0] === hover_date.toISOString().split('T')[0] );
 
             if (data_point){
-            var y_value=parseFloat(data_point['cumulative_total_accounts']);
+            var y_value=parseFloat(data_point['total_accounts']);
             tooltip.attr("transform", "translate(" + xScale(new Date(data_point.collected_for_day)) + "," + yScale(y_value)+ ")"); 
             tooltip.select("text").text(formatNumbers(y_value));
             tooltip.select("rect").attr('width',tooltip.select("text").node().getComputedTextLength()+12)

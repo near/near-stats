@@ -2,12 +2,9 @@ import React from 'react';
 import * as d3 from "d3";
 
 
-function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `app_accounts_last_30_days`, label_type, goals, setTooltip}) {
+function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `accounts_30_days_ago`, label_type, goals, setTooltip}) {
 
     const svgRef = React.useRef();
-
-    // set default compare value to 30
-    if (compare == 'app_accounts_last__days') compare = 'app_accounts_last_30_days'
 
     let app_lookup = {}
     app_data.forEach(d => app_lookup[d.slug] = d)
@@ -30,7 +27,7 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `app
     const margin = {
         left: 200,
         right: 50,
-        top: 0,
+        top: 20,
         bottom: 75
     }
 
@@ -132,7 +129,7 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `app
             .attr("opacity", 1)
             .on("mouseover", (event,d) => {
                 let data = {
-                    [app_lookup[d.app].title]:"",
+                    [app_lookup[d.entity_id].title]:"",
                     'Total Accounts' : formatNumber(d.total_accounts),
                     [`Created in the Last ${compare.split('_')[3]} Days`] : formatNumber(d[x] - d[compare])
                 }
@@ -160,7 +157,7 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `app
             .attr("fill", "#7FADBC")
             .on("mouseover", (event,d) => {
                 let data = {
-                    [app_lookup[d.app].title]:"",
+                    [app_lookup[d.entity_id].title]:"",
                     'Total Accounts' : formatNumber(d.total_accounts),
                     [`Created in the Last ${compare.split('_')[3]} Days`] : formatNumber(d[x] - d[compare])
                 }
@@ -288,9 +285,9 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `app
 
         // set text for dynamic growth legend text
         let compare_text
-        if (compare === 'app_accounts_last_30_days') {
+        if (compare === 'accounts_30_days_ago') {
             compare_text = '30 days'
-        } else if (compare === 'app_accounts_last_60_days') {
+        } else if (compare === 'accounts_60_days_ago') {
             compare_text = '60 days'
         } else {
             compare_text = '90 days'
