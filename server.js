@@ -354,7 +354,7 @@ app.prepare().then(async () => {
 
   })
 
-  server.get('/api/v1/:network/apps/accounts/summary', async (req, res) => {
+  server.get('/api/v1/:network/apps/accounts/summary', cache.route(), async (req, res) => {
 
     // extracting a limit parameter from the the url
     const { network } = req.params
