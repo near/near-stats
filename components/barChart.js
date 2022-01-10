@@ -1,5 +1,6 @@
 import React from 'react';
 import * as d3 from "d3";
+import numeral from "numeral";
 
 
 function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `accounts_30_days_ago`, label_type, goals, setTooltip}) {
@@ -22,6 +23,23 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `acc
     data.forEach(d => {
         if (!d.hasOwnProperty(compare)) d[compare] = 0
     })
+
+    // format value
+    function formatNumbers (value) {
+        // Nine Zeroes for Billions
+        return Math.abs(Number(value)) >= 1.0e+9
+        ? (Math.abs(Number(value)) / 1.0e+9).toFixed(2) + "B"
+
+        // Six Zeroes for Millions 
+        : Math.abs(Number(value)) >= 1.0e+6
+        ? (Math.abs(Number(value)) / 1.0e+6).toFixed(2) + "M"
+
+        // Three Zeroes for Thousands
+        : Math.abs(Number(value)) >= 1.0e+3
+        ? (Math.abs(Number(value)) / 1.0e+3).toFixed(0) + "K"
+    
+        : Math.abs(Number(value));
+    }
 
     // margins for SVG
     const margin = {
@@ -219,10 +237,14 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `acc
             .attr("transform", d => "translate(" + '150' + "," + (yScale(d)+20) + ")")
 
         // goals
+        const goal_list=[]
+        goals.forEach(g => 
+            goal_list.push(numeral(g)._value)
+            )
         // draw goal line
         svgContent
             .selectAll(".goal-line")
-            .data(goals)
+            .data(goal_list)
             .join('line')
             .attr('x1', d => xScale(d))
             .attr('y1', 0)
@@ -234,7 +256,7 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `acc
         // draw label box
         svgContent
             .selectAll(".goal-label-box")
-            .data(goals)
+            .data(goal_list)
             .join('rect')
             .attr('x', d => xScale(d) - 20)
             .attr('y', height + 24)
@@ -249,11 +271,11 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `acc
         // add label text
         svgContent
             .selectAll(".goal-label-text")
-            .data(goals)
+            .data(goal_list)
             .join('text')
             .attr('x', d => xScale(d))
             .attr('y', height + 35)
-            .text(d => d / 1000 + 'k')
+            .text(d => formatNumbers(d))
             .attr('dominant-baseline', 'middle')
             .attr('text-anchor', 'middle')
             .attr('class', 'goal-label-text')

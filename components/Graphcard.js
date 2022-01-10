@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from '../styles/Graphcard.module.scss'
 import Select from 'react-select'
+import CreatableSelect from 'react-select/creatable';
 import Switch from "react-switch"
 import canvasCapture from '../helpers/2dCanvasCapture'
 
@@ -56,18 +57,18 @@ export default function GraphCard({ icon, title, children, size = "full", setGoa
   //set the dropdown menu based on the card title
   if (title === 'Total NEAR Accounts') {
     sel =
-      <Select
+      <CreatableSelect
         isMulti
         className={styles.react_select_container}
         classNamePrefix={"react_select"}
-        isSearchable={false}
         isClearable={false}
         components={{
           IndicatorSeparator: () => null
         }}
+        noOptionsMessage={() =>"Type to add"}
         placeholder="Goals"
         onChange={handleGoals}
-        options={[{ value: 2000000, label: '2.0M' }, { value: 2500000, label: '2.5M' }, { value: 3000000, label: '3.0M' }]}
+        options={[]}
         instanceId={title}
       />
 
@@ -75,18 +76,20 @@ export default function GraphCard({ icon, title, children, size = "full", setGoa
   } else if (title === 'Top NEAR Apps') {
 
     sel = <>
-      <Select
+      <CreatableSelect
         isMulti
         className={styles.react_select_container}
         classNamePrefix={"react_select"}
-        isSearchable={false}
         isClearable={false}
         components={{
           IndicatorSeparator: () => null
+        // }, {
+        //   DropdownIndicator: () => null
         }}
+        noOptionsMessage={() =>"Type to add"}
         placeholder="Milestones"
         onChange={handleMilestones}
-        options={[{ value: 10000, label: '10k' }, { value: 20000, label: '20k' }, { value: 30000, label: '30k' }, { value: 40000, label: '40k' }, { value: 50000, label: '50k' }, { value: 60000, label: '60k' }, { value: 70000, label: '70k' }]}
+        options={[]}
         instanceId={title}
       />
     </>
