@@ -1,5 +1,6 @@
 import React from "react";
 import * as d3 from "d3";
+import numeral from "numeral";
 
 
 function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y', compare = 30, goals = [2000000], selection }) {
@@ -21,9 +22,9 @@ function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y',
     const height = svgHeight - margin.top - margin.bottom
     const width = svgWidth - margin.left - margin.right
 
-    // helpers for number formatting 
-    const precision = d3.precisionPrefix(1e5, 1.3e6);
-    const formatter = d3.formatPrefix("." + precision, 1.3e6);
+    // // helpers for number formatting 
+    // const precision = d3.precisionPrefix(1e5, 1.3e6);
+    // const formatter = d3.formatPrefix("." + precision, 1.3e6);
 
     // will be called initially and on every data change
     React.useEffect(() => {
@@ -154,14 +155,14 @@ function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y',
 
 
         // format tooltip value
-        function formatNumbers (value) {
+        function formatNumbers (value, decimals = 1) {
             // Nine Zeroes for Billions
             return Math.abs(Number(value)) >= 1.0e+9
             ? (Math.abs(Number(value)) / 1.0e+9).toFixed(2) + "B"
 
             // Six Zeroes for Millions 
             : Math.abs(Number(value)) >= 1.0e+6
-            ? (Math.abs(Number(value)) / 1.0e+6).toFixed(2) + "M"
+            ? (Math.abs(Number(value)) / 1.0e+6).toFixed(decimals) + "M"
 
             // Three Zeroes for Thousands
             : Math.abs(Number(value)) >= 1.0e+3
@@ -180,7 +181,7 @@ function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y',
             if (data_point){
             var y_value=parseFloat(data_point['total_accounts']);
             tooltip.attr("transform", "translate(" + xScale(new Date(data_point.collected_for_day)) + "," + yScale(y_value)+ ")"); 
-            tooltip.select("text").text(formatNumbers(y_value));
+            tooltip.select("text").text(formatNumbers(y_value,2));
             tooltip.select("rect").attr('width',tooltip.select("text").node().getComputedTextLength()+12)
             }
 
@@ -226,10 +227,15 @@ function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y',
             .attr('class', 'current-line')
             .attr('stroke', "rgba(117, 117, 117, 0.2)")
 
+        // goals
+        const goal_list=[]
+        goals.forEach(g => 
+            goal_list.push(numeral(g)._value)
+            )
         // draw goal lines
         svgContent
             .selectAll(".goal-line")
-            .data(goals)
+            .data(goal_list)
             .join('line')
             .attr('x1', xScale(dateExtent[0]))
             .attr('y1', d => yScale(d))
@@ -275,7 +281,7 @@ function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y',
             .join('text')
             .attr('x', -70)
             .attr('y', yScale(growthEndValue))
-            .text(formatter(growthEndValue))
+            .text(formatNumbers(growthEndValue))
             .attr('dominant-baseline', 'middle')
             .attr('text-anchor', 'end')
             .attr('class', 'current-value-text')
@@ -284,7 +290,7 @@ function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y',
         // draw goal label boxes
         svgNoClip
             .selectAll(".goal-label-box")
-            .data(goals)
+            .data(goal_list)
             .join('rect')
             .attr('x', -60)
             .attr('y', d => yScale(d) - 10)
@@ -299,7 +305,7 @@ function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y',
         // add goal labels text
         svgNoClip
             .selectAll(".goal-label-text")
-            .data(goals)
+            .data(goal_list)
             .join('text')
             .attr('x', -30)
             .attr('y', d => yScale(d))
@@ -313,11 +319,11 @@ function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y',
         // add goal label values text
         svgNoClip
             .selectAll(".goal-value-text")
-            .data(goals)
+            .data(goal_list)
             .join('text')
             .attr('x', -70)
             .attr('y', d => yScale(d))
-            .text(d => formatter(d))
+            .text(d => formatNumbers(d))
             .attr('dominant-baseline', 'middle')
             .attr('text-anchor', 'end')
             .attr('class', 'current-value-text')
