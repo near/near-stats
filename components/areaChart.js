@@ -107,7 +107,6 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
             .range([height, 0])
             .domain([0, d3.max(stacked_apps.map(d => d[1]).flat(), d => d[y])])
 
-
         // generator for svg path
         const lineGenerator = d3.line()
             .x(d => xScale(new Date(d[x])))
@@ -275,11 +274,11 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
         // Top 10 View
         // create group for line and label
         var top_app_group = svgContent
-            .selectAll('g')
+            .selectAll('app-label-group')
             .data(stacked_apps)
-            .enter()
-            .append('g')
-            .attr("class", "app-label-group");
+            .join('g')
+            .attr("class", "app-label-group")
+            .attr("id",d => 'groupid'+d[0]);
 
         // move group to front to enable visibility
         d3.selection.prototype.moveToFront = function() {
