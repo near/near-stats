@@ -20,10 +20,18 @@ import styles from '../styles/datatable.module.scss'
 
 // sort functions
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
+  if (orderBy === 'entity_id'){
+    var elementA = a[orderBy].toLowerCase()
+    var elementB = b[orderBy].toLowerCase()
+  } else {
+    var elementA = a[orderBy]
+    var elementB = b[orderBy]
+  }
+
+  if (elementB < elementA) {
     return -1;
   }
-  if (b[orderBy] > a[orderBy]) {
+  if (elementB > elementA) {
     return 1;
   }
   return 0;
@@ -55,7 +63,7 @@ function stableSort(array, comparator) {
 // Set Header
 const headCells = [
   {
-    id: 'app',
+    id: 'entity_id',
     numeric: false,
     disableSort: false,
     label: 'App',
