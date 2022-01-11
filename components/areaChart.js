@@ -81,7 +81,20 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
         let other_apps_line_data = stackedData[0].map(d => ({[x]: d.data[x], [y] : detail ? 0 : d[1]}) )
         let top_apps_line_data = stackedData[1].map(d => ({[x]: d.data[x], [y] : detail ? 0 : d[1]}) )
 
-        var stacked_apps = d3.groups(app_detail, d => d.entity_id)
+        var stacked_apps_all = d3.groups(app_detail, d => d.entity_id)
+
+        function compare( a, b ) {
+            if ( a[1][a[1].length-1][y] < b[1][b[1].length-1][y] ){
+              return 1;
+            }
+            if ( a[1][a[1].length-1][y] > b[1][b[1].length-1][y] ){
+              return -1;
+            }
+            return 0;
+          }
+          
+        var stacked_apps = stacked_apps_all.sort(compare).slice(0,10)
+        
 
         if (growth == true){
             stacked_apps.forEach(app => {
@@ -291,13 +304,17 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
         svgContent
             .selectAll(".app-label-group")
             .attr("opacity", detail ? 1 : 0)
-            .attr("stroke-opacity", detail ? .5 : 0)
+            .attr("stroke-opacity", detail ? .4 : 0)
             .on("mouseover", function (t) {
-                d3.select(this).attr("stroke-opacity",1)
+                d3.selectAll(".app-label-group").attr("stroke-opacity",.1)
+                d3.selectAll(".app-label-text").attr("opacity",.4)
+                d3.select(this).attr("stroke-opacity",1).select(".app-label-text").attr("opacity",1)
                 d3.select(this).moveToFront()
             })
             .on("mouseout", function (t) {
-                d3.select(this).attr("stroke-opacity",.5)
+                // d3.select(this).attr("stroke-opacity",.1)
+                d3.selectAll(".app-label-group").attr("stroke-opacity",.4)
+                d3.selectAll(".app-label-text").attr("opacity",1)
             });
 
         // draw line
