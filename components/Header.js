@@ -5,7 +5,7 @@ import Select from 'react-select'
 import { setTheme } from '../helpers/theme';
 
 
-export default function Header({ setDateCompare, setNetwork }) {
+export default function Header({ setDateCompare, setNetwork, setChecked, checked }) {
 
   //declare date compares
   const handleChange = (event) => {
@@ -14,7 +14,6 @@ export default function Header({ setDateCompare, setNetwork }) {
   
   //declare React Hooks and handlers
   //dark mode
-  const [checked, setChecked] = React.useState(false);
   const handleDarkMode = (event) => {
     setChecked(event);
     event ? setTheme('theme-dark') : setTheme('theme-light');
