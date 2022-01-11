@@ -6,7 +6,7 @@ import Switch from "react-switch"
 import canvasCapture from '../helpers/2dCanvasCapture'
 
 
-export default function GraphCard({ icon, title, children, size = "full", setGoals, setMilestones, setDetail, setDetail1, label_type, setLabel, dateCompare }) {
+export default function GraphCard({ icon, title, children, size = "full", setSelect, label_type, setLabel, dateCompare, placeholder }) {
 
   const elementRef = React.useRef();
 
@@ -20,15 +20,7 @@ export default function GraphCard({ icon, title, children, size = "full", setGoa
   const handleGoals = (event) => {
     let goal_list = []
     event.forEach(d => goal_list.push(d.value))
-    setGoals(goal_list)
-    
-  };
-  
-  //milestones
-  const handleMilestones = (event) => {
-    let goal_list = []
-    event.forEach(d => goal_list.push(d.value))
-    setMilestones(goal_list)
+    setSelect(goal_list)
     
   };
   
@@ -45,17 +37,12 @@ export default function GraphCard({ icon, title, children, size = "full", setGoa
   
   //NEAR accounts by app detail
   const handleDetail = (event) => {
-    setDetail(event.value)
-  }
-  
-  //NEAR account growth by app detail
-  const handleDetail1 = (event) => {
-    setDetail1(event.value)
+    setSelect(event.value)
   }
 
   let sel, comp
   //set the dropdown menu based on the card title
-  if (title === 'Total NEAR Accounts') {
+  if (title === 'Total NEAR Accounts' || title === 'Top NEAR Apps') {
     sel =
       <CreatableSelect
         isMulti
@@ -66,36 +53,14 @@ export default function GraphCard({ icon, title, children, size = "full", setGoa
           IndicatorSeparator: () => null
         }}
         noOptionsMessage={() =>"Type to add"}
-        placeholder="Goals"
+        placeholder={placeholder}
         onChange={handleGoals}
         options={[]}
         instanceId={title}
       />
 
     comp = title + ' (' + dateCompare + ' Day Growth)'
-  } else if (title === 'Top NEAR Apps') {
-
-    sel = <>
-      <CreatableSelect
-        isMulti
-        className={styles.react_select_container}
-        classNamePrefix={"react_select"}
-        isClearable={false}
-        components={{
-          IndicatorSeparator: () => null
-        // }, {
-        //   DropdownIndicator: () => null
-        }}
-        noOptionsMessage={() =>"Type to add"}
-        placeholder="Milestones"
-        onChange={handleMilestones}
-        options={[]}
-        instanceId={title}
-      />
-    </>
-
-    comp = title + ' (' + dateCompare + ' Day Growth)'
-  } else if (title === 'Total NEAR Accounts by App') {
+  } else if (title === 'Total NEAR Accounts by App' || title === 'NEAR Account Growth By App') {
     sel =
       <Select
         className={styles.react_select_container}
@@ -111,30 +76,12 @@ export default function GraphCard({ icon, title, children, size = "full", setGoa
         instanceId={title}
       />
     comp = title + ' (Last ' + dateCompare + ' Days)'
-  } else if (title === 'NEAR Account Growth By App') {
-    sel =
-      <Select
-        className={styles.react_select_container}
-        classNamePrefix={"react_select"}
-        isSearchable={false}
-        isClearable={false}
-        components={{
-          IndicatorSeparator: () => null
-        }}
-        defaultValue={{ value: false, label: 'Overview' }}
-        onChange={handleDetail1}
-        options={[{ value: false, label: 'Overview' }, { value: true, label: 'Top 10' }]}
-        instanceId={title}
-      />
-
-    comp = title + ' (Last ' + dateCompare + ' Days)'
   } else {
     sel = ''
     comp = title
   }
 
   let label_switch
-  let header_padding
   if (title === 'Top NEAR Apps') {
     label_switch = <Switch
       checked={checked}
@@ -169,9 +116,7 @@ export default function GraphCard({ icon, title, children, size = "full", setGoa
       handleDiameter={20}
       width={35}
     />
-
-    header_padding = '0'
-  } else { label_switch = ''; header_padding = '16px' }
+  } else {label_switch = ''}
 
 
 
