@@ -24,9 +24,10 @@ const Home = ({ total_accounts, app_summary, app_total, apps}) => {
   const [label, setLabel] = React.useState('Percent')
   const [detail, setDetail] = React.useState(false);
   const [detail1, setDetail1] = React.useState(false);
+  const [checked, setChecked] = React.useState(false);
 
   React.useEffect(() => {
-    keepTheme();
+    keepTheme(setChecked);
 },[]);
 
   return (
@@ -35,7 +36,7 @@ const Home = ({ total_accounts, app_summary, app_total, apps}) => {
         <div className={styles.background}>
           <Tooltip visible={tooltip.visible} data={tooltip.data} x={tooltip.x} y={tooltip.y}></Tooltip>
           <div>
-            <Header setDateCompare={setDateCompare} setNetwork={setNetwork}></Header>
+            <Header setDateCompare={setDateCompare} setNetwork={setNetwork} setChecked={setChecked} checked={checked}></Header>
             <div className={styles.gridContainer}>
               <div className="global-flex-container">
                 <GraphCard title="Total NEAR Accounts" size="half" icon='/images/Frametotalacc.png' setGoals={setGoals} dateCompare={date_compare}>

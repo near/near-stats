@@ -4,15 +4,18 @@ function setTheme(themeName) {
   document.documentElement.className = themeName;
 }
 
-function keepTheme() {
+function keepTheme(setChecked) {
   if (localStorage.getItem('theme')) {
     if (localStorage.getItem('theme') === 'theme-dark') {
       setTheme('theme-dark');
+      setChecked(true)
     } else if (localStorage.getItem('theme') === 'theme-light') {
       setTheme('theme-light')
+      setChecked(false)
     }
   } else {
     setTheme('theme-light')
+    setChecked(false)
   }
 }
 
