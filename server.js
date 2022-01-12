@@ -522,9 +522,9 @@ app.prepare().then(async () => {
     return handle(req, res)
   })
 
-  server.listen(process.env.NEXT_PORT || 3000, (err) => {
+  server.listen(process.env.NEXT_PORT || process.env.PORT || 3000, (err) => {
     if (err) throw err
-    console.log(`NEAR Analytics API listening at http://localhost:${process.env.NEXT_PORT || 3000}`)
+    console.log(`NEAR Analytics API listening at http://localhost:${process.env.NEXT_PORT || process.env.PORT || 3000}`)
   })
 
 })

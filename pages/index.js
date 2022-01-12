@@ -66,13 +66,14 @@ const Home = ({ total_accounts, app_summary, app_total, apps}) => {
 }
 export async function getServerSideProps() {
 
-  let total_accounts = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v1/mainnet/accounts/total`)
+  let total_accounts = await fetch(`http://localhost:${process.env.NEXT_PORT || process.env.PORT || 3000}/api/v1/mainnet/accounts/total`)
   total_accounts = await total_accounts.json()
-  let app_summary = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v1/mainnet/apps/accounts/summary`)
+  let app_summary = await fetch(`http://localhost:${process.env.NEXT_PORT || process.env.PORT || 3000}/api/v1/mainnet/apps/accounts/summary`)
+
   app_summary = await app_summary.json()
-  let app_total = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v1/mainnet/apps/accounts/total?limit=10`)
+  let app_total = await fetch(`http://localhost:${process.env.NEXT_PORT || process.env.PORT || 3000}/api/v1/mainnet/apps/accounts/total?limit=10`)
   app_total = await app_total.json()
-  let apps = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v1/mainnet/apps?contract=true`)
+  let apps = await fetch(`http://localhost:${process.env.NEXT_PORT || process.env.PORT || 3000}/api/v1/mainnet/apps?contract=true`)
   apps = await apps.json()
   if (!total_accounts || !app_summary || !app_total || !apps) {
     return {
