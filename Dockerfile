@@ -21,13 +21,11 @@ RUN yarn
 # since it builds the server as well
 RUN yarn build
 
-# expose 5000 on container
-EXPOSE 5000
-
-# set app serving to permissive / assigned
-ENV NEXT_HOST=0.0.0.0
 # set app port
-ENV NEXT_PORT=5000
+ENV PORT=5000
+
+# expose 5000 on container
+EXPOSE $PORT
 
 # start the app
 RUN chmod +x start.sh
