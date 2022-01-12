@@ -23,7 +23,7 @@ const Home = ({ total_accounts, app_summary, app_total, apps}) => {
   const [milestones, setMilestones] = React.useState([]);
   const [label, setLabel] = React.useState('Percent')
   const [detail, setDetail] = React.useState(false);
-  const [detail1, setDetail1] = React.useState(false);
+  const [detailGrowth, setDetailGrowth] = React.useState(false);
   const [checked, setChecked] = React.useState(false);
 
   React.useEffect(() => {
@@ -39,19 +39,19 @@ const Home = ({ total_accounts, app_summary, app_total, apps}) => {
             <Header setDateCompare={setDateCompare} setNetwork={setNetwork} setChecked={setChecked} checked={checked}></Header>
             <div className={styles.gridContainer}>
               <div className="global-flex-container">
-                <GraphCard title="Total NEAR Accounts" size="half" icon='/images/Frametotalacc.png' setGoals={setGoals} dateCompare={date_compare}>
+                <GraphCard title="Total NEAR Accounts" size="half" icon='/images/Frametotalacc.png' setSelect={setGoals} placeholder='Goals' dateCompare={date_compare}>
                   <BrushChart data={total_accounts} x='collected_for_day' y='total_accounts'>
                     {options => <BrushedAreaChart data={options.data} prediction_data={options.prediction_data} x='collected_for_day' y='total_accounts' compare={date_compare} selection={options.selection} goals={goals} setTooltip={setTooltip} />}
                   </BrushChart>
                 </GraphCard>
-                <GraphCard title="Top NEAR Apps" size="half" icon='/images/Frametopapps.png' setMilestones={setMilestones} label_type={label} setLabel={setLabel} dateCompare={date_compare}>
+                <GraphCard title="Top NEAR Apps" size="half" icon='/images/Frametopapps.png' setSelect={setMilestones} placeholder='Milestones' label_type={label} setLabel={setLabel} dateCompare={date_compare}>
                   <BarChart data={app_summary} app_data={apps} x='total_accounts' y='entity_id' compare={`accounts_${date_compare}_days_ago`} goals={milestones} setTooltip={setTooltip} label_type={label} />
                 </GraphCard>
-                <GraphCard title="Total NEAR Accounts by App" size="half" icon='/images/Frametotalaccbyapp.png' setDetail={setDetail} dateCompare={date_compare}>
+                <GraphCard title="Total NEAR Accounts by App" size="half" icon='/images/Frametotalaccbyapp.png' setSelect={setDetail} dateCompare={date_compare}>
                   <AreaChart account_data={total_accounts} app_data={app_total} x='collected_for_day' y='total_accounts' compare={date_compare} detail={detail} setTooltip={setTooltip} />
                 </GraphCard>
-                <GraphCard title="NEAR Account Growth By App" size="half" icon='/images/Framenewaccbyapp.png' setDetail1={setDetail1} dateCompare={date_compare}>
-                  <AreaChart account_data={total_accounts} app_data={app_total} growth={true} x='collected_for_day' y='total_accounts' compare={date_compare} detail={detail1} setTooltip={setTooltip} />
+                <GraphCard title="NEAR Account Growth By App" size="half" icon='/images/Framenewaccbyapp.png' setSelect={setDetailGrowth} dateCompare={date_compare}>
+                  <AreaChart account_data={total_accounts} app_data={app_total} growth={true} x='collected_for_day' y='total_accounts' compare={date_compare} detail={detailGrowth} setTooltip={setTooltip} />
                 </GraphCard>
                 <GraphCard title="Near App Momentum" icon='/images/Frameappmomentum.png'>
                   <Datatable data={app_summary} app_data={apps} accounts='total_accounts' name='entity_id' thirty="accounts_30_days_ago" ninety="accounts_90_days_ago" />

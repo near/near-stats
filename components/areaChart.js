@@ -1,5 +1,6 @@
 import React from "react";
 import * as d3 from "d3";
+import { formatNumbers } from '../helpers/formatNumbers';
 
 function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compare = 30, growth = false, detail }) {
 
@@ -243,23 +244,6 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
                 top_app_tooltip.style("display", "none");
             })
             .on("mousemove", mousemove);
-
-        // format tooltip value
-        function formatNumbers (value) {
-                // Nine Zeroes for Billions
-                return Math.abs(Number(value)) >= 1.0e+9
-                ? (Math.abs(Number(value)) / 1.0e+9).toFixed(2) + "B"
-
-                // Six Zeroes for Millions 
-                : Math.abs(Number(value)) >= 1.0e+6
-                ? (Math.abs(Number(value)) / 1.0e+6).toFixed(2) + "M"
-
-                // Three Zeroes for Thousands
-                : Math.abs(Number(value)) >= 1.0e+3
-                ? (Math.abs(Number(value)) / 1.0e+3).toFixed(0) + "K"
-            
-                : Math.abs(Number(value));
-            }
         
         // transform tooltip placement and text based on hover position
         function mousemove(event) {

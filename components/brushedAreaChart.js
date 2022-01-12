@@ -1,6 +1,7 @@
 import React from "react";
 import * as d3 from "d3";
 import numeral from "numeral";
+import { formatNumbers } from '../helpers/formatNumbers';
 
 
 function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y', compare = 30, goals = [2000000], selection }) {
@@ -153,24 +154,6 @@ function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y',
             })
             .on("mousemove", mousemove);
 
-
-        // format tooltip value
-        function formatNumbers (value, decimals = 1) {
-            // Nine Zeroes for Billions
-            return Math.abs(Number(value)) >= 1.0e+9
-            ? (Math.abs(Number(value)) / 1.0e+9).toFixed(2) + "B"
-
-            // Six Zeroes for Millions 
-            : Math.abs(Number(value)) >= 1.0e+6
-            ? (Math.abs(Number(value)) / 1.0e+6).toFixed(decimals) + "M"
-
-            // Three Zeroes for Thousands
-            : Math.abs(Number(value)) >= 1.0e+3
-            ? (Math.abs(Number(value)) / 1.0e+3).toFixed(0) + "K"
-        
-            : Math.abs(Number(value));
-        }
-
         // transform tooltip placement and text based on hover position
         function mousemove(event) {
             
@@ -230,7 +213,7 @@ function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y',
         // goals
         const goal_list=[]
         goals.forEach(g => 
-            goal_list.push(numeral(g)._value)
+            goal_list.push(numeral(g.toLowerCase())._value)
             )
         // draw goal lines
         svgContent
