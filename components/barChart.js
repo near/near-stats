@@ -140,10 +140,6 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `acc
             .on("mouseout", (event,d) => {
                 setTooltip({visible:false, data:{}, x: event.pageX, y: event.pageY})
             })
-        
-        // function compareLabel(compare){
-        //     return `Created in the Last ${compare.split('_')[3]} Days`
-        // }
 
         // draw growth bar with tooltip on hover
         svgContent
@@ -226,6 +222,7 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `acc
         goals.forEach(g => 
             goal_list.push(numeral(g.toLowerCase())._value)
             )
+            
         // draw goal line
         svgContent
             .selectAll(".goal-line")

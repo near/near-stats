@@ -4,9 +4,11 @@ import { formatNumbers } from '../helpers/formatNumbers';
 
 function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compare = 30, growth = false, detail }) {
 
+    // calculate dates
     let dateExtent = d3.extent(account_data, d => new Date(d[x]));
     let startDate = d3.timeDay.offset(dateExtent[1], -compare)
 
+    // sort data in chronological order
     account_data.sort((a, b) => new Date(a[x]) > new Date(b[x]) ? 1 : -1)
     app_data.sort((a, b) => new Date(a[x]) > new Date(b[x]) ? 1 : -1)
 
@@ -31,6 +33,7 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
     // will be called initially and on every data change
     React.useEffect(() => {
 
+        // filter data for compare period start date
         account_data = account_data.filter(d => new Date(d[x]) > startDate)
         app_data = app_data.filter(d => new Date(d[x]) > startDate)
 
@@ -66,6 +69,7 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
             .keys(['other', 'top apps'])
             (combined_data)
 
+        // calculate growth
         if (growth == true) {
             let other_start = stackedData[0][0][1]
             let app_start = stackedData[1][0][1]
@@ -83,19 +87,6 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
         let top_apps_line_data = stackedData[1].map(d => ({[x]: d.data[x], [y] : detail ? 0 : d[1]}) )
 
         var stacked_apps = d3.groups(app_detail, d => d.entity_id)
-
-        // function compare( a, b ) {
-        //     if ( a[1][a[1].length-1][y] < b[1][b[1].length-1][y] ){
-        //       return 1;
-        //     }
-        //     if ( a[1][a[1].length-1][y] > b[1][b[1].length-1][y] ){
-        //       return -1;
-        //     }
-        //     return 0;
-        //   }
-          
-        // var stacked_apps = stacked_apps_all.sort(compare).slice(0,10)
-        
 
         if (growth == true){
             stacked_apps.forEach(app => {
@@ -139,7 +130,7 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
             .y1(d => yScale(d[1]))
             .curve(d3.curveMonotoneX)
 
-            const t = d3.transition()
+        const t = d3.transition()
             .duration(500)
 
         // draw stacked area chart
@@ -312,10 +303,7 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
             .attr("stroke-width", 3)
             .attr("fill", "none")
             .attr("stroke-linecap", "round")
-            .attr("d", d => {
-                console.log(d)
-                return appLineGenerator(d[1])
-            })
+            .attr("d", d => appLineGenerator(d[1]))
 
         // draw label box
         top_app_group

@@ -1,6 +1,7 @@
 import styles from '../styles/Footer.module.scss'
 import React from 'react'
 
+// sticky footer for report a bug button
 export default function Footer({ }) {
 
   return (

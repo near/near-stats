@@ -16,7 +16,7 @@ export default function GraphCard({ icon, title, children, size = "full", setSel
     canvasCapture(title, elementRef.current)
   }
   
-  //goals
+  // set list for goals and milestones
   const handleGoals = (event) => {
     let goal_list = []
     event.forEach(d => goal_list.push(d.value))
@@ -24,7 +24,7 @@ export default function GraphCard({ icon, title, children, size = "full", setSel
     
   };
   
-  //percentage switch
+  // percentage switch for barChart
   const [checked, setChecked] = React.useState(false);
   const handleLabel = () => {
     setChecked(!checked)
@@ -35,15 +35,15 @@ export default function GraphCard({ icon, title, children, size = "full", setSel
     }
   };
   
-  //NEAR accounts by app detail
+  // set view for areaChart
   const handleDetail = (event) => {
     setSelect(event.value)
   }
 
-  let sel, comp
-  //set the dropdown menu based on the card title
+  let dropdown, dynamic_title
+  //set the dropdown menu and title based on the card title
   if (title === 'Total NEAR Accounts' || title === 'Top NEAR Apps') {
-    sel =
+    dropdown =
       <CreatableSelect
         isMulti
         className={styles.react_select_container}
@@ -59,9 +59,9 @@ export default function GraphCard({ icon, title, children, size = "full", setSel
         instanceId={title}
       />
 
-    comp = title + ' (' + dateCompare + ' Day Growth)'
+    dynamic_title = title + ' (' + dateCompare + ' Day Growth)'
   } else if (title === 'Total NEAR Accounts by App' || title === 'NEAR Account Growth By App') {
-    sel =
+    dropdown =
       <Select
         className={styles.react_select_container}
         classNamePrefix={"react_select"}
@@ -75,13 +75,15 @@ export default function GraphCard({ icon, title, children, size = "full", setSel
         options={[{ value: false, label: 'Overview' }, { value: true, label: 'Top 10' }]}
         instanceId={title}
       />
-    comp = title + ' (Last ' + dateCompare + ' Days)'
+    dynamic_title = title + ' (Last ' + dateCompare + ' Days)'
   } else {
-    sel = ''
-    comp = title
+    // no dropdown or compare period for table
+    dropdown = ''
+    dynamic_title = title
   }
 
   let label_switch
+  // define switch for barChart
   if (title === 'Top NEAR Apps') {
     label_switch = <Switch
       checked={checked}
@@ -116,7 +118,10 @@ export default function GraphCard({ icon, title, children, size = "full", setSel
       handleDiameter={20}
       width={35}
     />
-  } else {label_switch = ''}
+  } else {
+    // no switch for other graphs
+    label_switch = ''
+  }
 
 
 
@@ -128,11 +133,11 @@ export default function GraphCard({ icon, title, children, size = "full", setSel
           <div className="global-flex-inner global-flex-inner-left">
             <img src={icon} className={styles.cardlogo} />
             <h3>
-              {comp}
+              {dynamic_title}
             </h3>
           </div>
           <div className="global-flex-inner global-flex-inner-right" data-html2canvas-ignore="">
-            {sel}
+            {dropdown}
             <div className="global-spacer"></div>
             <button className={styles.iconButton} onClick={handleCaptureClick}>
               <img src='/images/share-2share.png' className={styles.share} />

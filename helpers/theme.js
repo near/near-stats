@@ -4,6 +4,7 @@ function setTheme(themeName) {
   document.documentElement.className = themeName;
 }
 
+// maintain previous dark/light mode setting on reload
 function keepTheme(setChecked) {
   if (localStorage.getItem('theme')) {
     if (localStorage.getItem('theme') === 'theme-dark') {
