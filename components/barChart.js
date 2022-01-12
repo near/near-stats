@@ -232,7 +232,8 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `acc
             .attr("y", 0)
             .attr("width", logo_size)
             .attr("height", logo_size)
-            .attr("xlink:href", d => app_lookup[d].logo)
+            .attr("href", d => app_lookup[d].logo)
+            .attr("data-html2canvas-ignore", "") // svg cross site origin images for supported by html2canvas
             .attr("mask", d => "url(#logo-clip-" + d + ")")
             .attr("transform", d => "translate(" + '150' + "," + (yScale(d)+20) + ")")
 
