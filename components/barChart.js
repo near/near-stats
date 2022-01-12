@@ -1,6 +1,7 @@
 import React from 'react';
 import * as d3 from "d3";
 import numeral from "numeral";
+import { formatNumbers } from '../helpers/formatNumbers';
 
 
 function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `accounts_30_days_ago`, label_type, goals, setTooltip}) {
@@ -23,23 +24,6 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `acc
     data.forEach(d => {
         if (!d.hasOwnProperty(compare)) d[compare] = 0
     })
-
-    // format value
-    function formatNumbers (value) {
-        // Nine Zeroes for Billions
-        return Math.abs(Number(value)) >= 1.0e+9
-        ? (Math.abs(Number(value)) / 1.0e+9).toFixed(2) + "B"
-
-        // Six Zeroes for Millions 
-        : Math.abs(Number(value)) >= 1.0e+6
-        ? (Math.abs(Number(value)) / 1.0e+6).toFixed(2) + "M"
-
-        // Three Zeroes for Thousands
-        : Math.abs(Number(value)) >= 1.0e+3
-        ? (Math.abs(Number(value)) / 1.0e+3).toFixed(0) + "K"
-    
-        : Math.abs(Number(value));
-    }
 
     // margins for SVG
     const margin = {
@@ -149,7 +133,7 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `acc
                 let data = {
                     [app_lookup[d.entity_id].title]:"",
                     'Total Accounts' : formatNumber(d.total_accounts),
-                    [`Created in the Last ${compare.split('_')[3]} Days`] : formatNumber(d[x] - d[compare])
+                    [`Created in the Last ${compare.split('_')[1]} Days`] : formatNumber(d[x] - d[compare])
                 }
                 setTooltip({visible:true, data:data, x: event.pageX, y: event.pageY})
             })
@@ -239,7 +223,7 @@ function Barchart({ data = [], app_data = [], x = '_x', y = '_y', compare = `acc
         // goals
         const goal_list=[]
         goals.forEach(g => 
-            goal_list.push(numeral(g)._value)
+            goal_list.push(numeral(g.toLowerCase())._value)
             )
         // draw goal line
         svgContent
