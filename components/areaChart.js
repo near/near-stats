@@ -82,19 +82,19 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
         let other_apps_line_data = stackedData[0].map(d => ({[x]: d.data[x], [y] : detail ? 0 : d[1]}) )
         let top_apps_line_data = stackedData[1].map(d => ({[x]: d.data[x], [y] : detail ? 0 : d[1]}) )
 
-        var stacked_apps_all = d3.groups(app_detail, d => d.entity_id)
+        var stacked_apps = d3.groups(app_detail, d => d.entity_id)
 
-        function compare( a, b ) {
-            if ( a[1][a[1].length-1][y] < b[1][b[1].length-1][y] ){
-              return 1;
-            }
-            if ( a[1][a[1].length-1][y] > b[1][b[1].length-1][y] ){
-              return -1;
-            }
-            return 0;
-          }
+        // function compare( a, b ) {
+        //     if ( a[1][a[1].length-1][y] < b[1][b[1].length-1][y] ){
+        //       return 1;
+        //     }
+        //     if ( a[1][a[1].length-1][y] > b[1][b[1].length-1][y] ){
+        //       return -1;
+        //     }
+        //     return 0;
+        //   }
           
-        var stacked_apps = stacked_apps_all.sort(compare).slice(0,10)
+        // var stacked_apps = stacked_apps_all.sort(compare).slice(0,10)
         
 
         if (growth == true){
@@ -271,11 +271,12 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
         // Top 10 View
         // create group for line and label
         var top_app_group = svgContent
-            .selectAll('app-label-group')
+            .selectAll('.app-label-group')
             .data(stacked_apps)
             .join('g')
             .attr("class", "app-label-group")
             .attr("id",d => 'groupid'+d[0]);
+            
 
         // move group to front to enable visibility
         d3.selection.prototype.moveToFront = function() {
@@ -302,30 +303,39 @@ function AreaChart({ account_data = [], app_data = [], x = '_x', y = '_y', compa
             });
 
         // draw line
-        top_app_group 
-            .append("path")
-            .attr("class", "app-data-line transition-all")
+        top_app_group
+            .selectAll("path")
+            .data(d => [d])
+            .join("path")
+            .attr("class", "app-data-line")
             .attr("stroke", "#985FD0")
             .attr("stroke-width", 3)
             .attr("fill", "none")
             .attr("stroke-linecap", "round")
-            .attr("d", d => appLineGenerator(d[1]))
+            .attr("d", d => {
+                console.log(d)
+                return appLineGenerator(d[1])
+            })
 
         // draw label box
         top_app_group
-            .append('rect')
+            .selectAll("rect")
+            .data(d => [d])
+            .join("rect")
             .attr('x', d => xScale(new Date(d[1][d[1].length - 1][x])) + 5)
             .attr('y', d => appYscale(d[1][d[1].length - 1][y])-10)
             .attr('height', 20)
             .attr('rx', 10)
-            .attr("class", "app-label-box transition-all")
+            .attr("class", "app-label-box")
             .attr("stroke", "#985FD0")
             .attr("stroke-width", 2)
             .attr('fill','currentcolor')
         
         // add label text
         top_app_group
-            .append('text')
+            .selectAll("text")
+            .data(d => [d])
+            .join("text")
             .attr('x', d => xScale(new Date(d[1][d[1].length - 1][x])) + 10)
             .attr('y', d => appYscale(d[1][d[1].length - 1][y]))
             .text(d => d[0])
