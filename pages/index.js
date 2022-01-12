@@ -16,6 +16,7 @@ import styles from '../styles/Home.module.scss'
 
 const Home = ({ total_accounts, app_summary, app_total, apps}) => {
 
+  // set hooks for dropdowns and switches
   const [date_compare, setDateCompare] = React.useState(30);
   const [network, setNetwork] = React.useState('mainnet');
   const [tooltip, setTooltip] = React.useState({ visible: false, data: {}, x: 0, y: 0 });
@@ -26,6 +27,7 @@ const Home = ({ total_accounts, app_summary, app_total, apps}) => {
   const [detailGrowth, setDetailGrowth] = React.useState(false);
   const [checked, setChecked] = React.useState(false);
 
+  // set functionality for maintaining dark mode setting on reload
   React.useEffect(() => {
     keepTheme(setChecked);
 },[]);
@@ -64,6 +66,8 @@ const Home = ({ total_accounts, app_summary, app_total, apps}) => {
     </>
   )
 }
+
+// pull data from API
 export async function getServerSideProps() {
 
   let total_accounts = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v1/mainnet/accounts/total`)

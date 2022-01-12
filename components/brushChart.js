@@ -5,6 +5,7 @@ import { regressionPoly } from 'd3-regression';
 
 function BrushChart({ data = [], x = '_x', y = '_y', children }) {
 
+    // set hooks
     const svgRef = React.useRef();
     const isInitialMount = React.useRef(true);
     const [prediction_data, setPredictionData] = React.useState([]);
@@ -12,6 +13,7 @@ function BrushChart({ data = [], x = '_x', y = '_y', children }) {
     
     let dateExtent = d3.extent(data, d => new Date(d[x]));
 
+    // calculate regression only on initial load
     if (isInitialMount.current) {
         // Regression generator
         const regressionGenerator = regressionPoly()
@@ -30,6 +32,7 @@ function BrushChart({ data = [], x = '_x', y = '_y', children }) {
        isInitialMount.current = false;
     }
 
+    // define margins
     const margin = {
         left: 110,
         right: 70,

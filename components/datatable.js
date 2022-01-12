@@ -37,17 +37,19 @@ function descendingComparator(a, b, orderBy) {
   return 0;
 }
 
-//number formatting function
+//number formatting function (add commas)
 function formatNumber(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+// define sort order for columns
 function getComparator(order, orderBy) {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
+// set column sort function
 function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -172,6 +174,7 @@ function Datatable({ data = [], app_data = [], name = '_name', accounts = '_acco
   app_data.forEach(d => app_lookup[d.slug] = d)
 
   // format 30d and 90d columns
+  // calculate growth %
   function growth(total, added) {
     if (added) {
       return Math.floor((total - added) / added * 100)
@@ -183,6 +186,7 @@ function Datatable({ data = [], app_data = [], name = '_name', accounts = '_acco
     d["ninety_d"] = growth(d[accounts], d[ninety])
   });
 
+  // calculate arrow direction
   function growthArrow(value) {
     if (value > 0) {
       return <ArrowUpwardIcon sx={{ paddingTop: `5px` }} />

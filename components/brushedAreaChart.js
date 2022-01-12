@@ -8,6 +8,7 @@ function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y',
 
     const svgRef = React.useRef();
 
+    // declare margins
     const margin = {
         left: 110,
         right: 70,
@@ -22,10 +23,6 @@ function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y',
     // helper calculated variables for inner width & height
     const height = svgHeight - margin.top - margin.bottom
     const width = svgWidth - margin.left - margin.right
-
-    // // helpers for number formatting 
-    // const precision = d3.precisionPrefix(1e5, 1.3e6);
-    // const formatter = d3.formatPrefix("." + precision, 1.3e6);
 
     // will be called initially and on every data change
     React.useEffect(() => {
@@ -215,6 +212,7 @@ function BrushedAreaChart({ data = [], prediction_data = [], x = '_x', y = '_y',
         goals.forEach(g => 
             goal_list.push(numeral(g.toLowerCase())._value)
             )
+            
         // draw goal lines
         svgContent
             .selectAll(".goal-line")
