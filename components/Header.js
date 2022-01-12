@@ -36,7 +36,7 @@ export default function Header({ setDateCompare, setNetwork, setChecked, checked
   return (
     <div className={styles.headerContainer}>
       <div className={`global-flex-inner ${styles.flexInnerLeft}`}>
-        <a href="http://near.org" target="_blank"><img src={"/images/logo_nm.svg"} className={styles.nearlogo} /></a>
+        <a href="http://near.org" target="_blank" rel="noreferrer"><img src={"/images/logo_nm.svg"} className={styles.nearlogo} /></a>
         <div className="global-spacer"></div>
         <Select
           className={styles.react_select_container}
