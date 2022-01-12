@@ -1,21 +1,21 @@
 @import "./colors";
 
 .table_container {
-  background-color: $background;
+  background-color: $background !important;
 }
 
 .table_row {
-  border-color: $border;
+  border-color: $border !important;
 }
 
 .table_row:last-child td, .table_row:last-child th {
-  border-bottom: 0px;
+  border-bottom: 0px !important;
 } 
 
 .table_cell_header {
-  font-weight: 800;
-  font-family: "Manrope";
-  color: $text;
+  font-weight: 800 !important;
+  font-family: "Manrope" !important;
+  color: $text !important;
 }
 
 .table_sort_label, .table_sort_label:hover {
@@ -28,35 +28,35 @@
 
 .table_cell_app, .table_cell_total_accounts, .table_cell_total_accounts_bar,
 .table_cell_change, .table_cell_change_arrow  {
-  font-weight: 400;
-  font-family: "Manrope"; 
-  border-color: $border;
-  color: $text;
+  font-weight: 400 !important;
+  font-family: "Manrope" !important; 
+  border-color: $border !important;
+  color: $text !important;
 }
 
 .table_cell_app {
-  border-right: 1px; 
+  border-right: 1px !important; 
 }
 
 .table_cell_total_accounts {
-  padding-left: 5%;
-  padding-right: 0px; 
+  padding-left: 5% !important;
+  padding-right: 0px !important; 
   border-right: 0px;
 }
 
 .table_cell_total_accounts_bar {
-  padding-left: 0;
-  padding-right: 0px; 
+  padding-left: 0 !important;
+  padding-right: 0px !important; 
   border-right: 1px;
 }
 
 .table_cell_change {
-  padding-left: 3%;
-  padding-right: 0px; 
+  padding-left: 3% !important;
+  padding-right: 0px !important; 
   border-right: 0px;
 }
 
 .table_cell_change_arrow{
-  padding-left: 0;
+  padding-left: 0 !important;
   border-right: 1px;
 }

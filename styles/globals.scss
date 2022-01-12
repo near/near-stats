@@ -147,45 +147,45 @@ rect.selection {
 }
 
 .react_select__control {
-  border-radius: 20px;
-  background-color: $select-background;
+  border-radius: 20px !important;
+  background-color: $select-background !important;
   font-size: 13px;
-  fill: 'white';
-  min-height: 20px;
+  fill: 'white' !important;
+  min-height: 20px !important;
  }
 
  .react_select__single-value {
-  color: $text;
+  color: $text !important;
   width: "max-content";
   min-width: 100%;
 }
 
 .react_select__dropdown-indicator {
-  padding: 3px;
+  padding: 3px !important;
 }
 
 .react_select__menu {
-  background-color: $background;
+  background-color: $background !important;
   font-size: 13px;
 }
 
 .react_select__option:hover {
-  background-color: $select-hover;
+  background-color: $select-hover !important;
 }
 
 .react_select__option--is-selected, .react_select__option--is-selected:hover{
-  background-color: #5F8AFA;
+  background-color: #5F8AFA !important;
 }
 
 .react_select__multi-value {
-  border-radius: 20px;
+  border-radius: 20px !important;
   font-size: 13px;
 }
 
 .react_select__multi-value__remove:hover {
   border-radius: 20px;
-  background-color: #A463B0;
-  color: white;
+  background-color: #A463B0 !important;
+  color: white !important;
 }
 
 .react_select__input {
