@@ -70,7 +70,7 @@ export async function getServerSideProps() {
   total_accounts = await total_accounts.json()
   let app_summary = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v1/mainnet/apps/accounts/summary`)
   app_summary = await app_summary.json()
-  let app_total = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v1/mainnet/apps/accounts/total`)
+  let app_total = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v1/mainnet/apps/accounts/total?limit=10`)
   app_total = await app_total.json()
   let apps = await fetch(`http://localhost:${process.env.NEXT_PORT || 3000}/api/v1/mainnet/apps?contract=true`)
   apps = await apps.json()
