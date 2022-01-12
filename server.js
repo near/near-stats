@@ -255,33 +255,71 @@ app.prepare().then(async () => {
     // extracting additional query parameters
     const start = req.query.start ? new Date(req.query.start) : new Date(0) // start of EPOCH
     const end = req.query.end ? new Date(req.query.end) : new Date() // now
-    const limit = req.query.limit ? parseInt(req.query.limit) : null
+    const limit = req.query.limit ? `limit ${parseInt(req.query.limit)}` : ""
 
     // dates split to create postgres format
     let query = `
-    with apps_cumulative_accounts as
-    (
-      select
-        collected_for_day
-        , entity_id
-        , sum(new_accounts_count) over(partition by entity_id order by collected_for_day) as total_accounts
-      from
-        daily_new_accounts_per_ecosystem_entity_count
-    )
-    select
-      collected_for_day
-      , entity_id
-      , total_accounts
-    from
-      apps_cumulative_accounts
-    where
-      collected_for_day >= '${start.toISOString().split('T')[0]}'
-      and collected_for_day <= '${end.toISOString().split('T')[0]}'
-    order by 
-      total_accounts desc
-    `
-
-    if (limit !== null) query += `limit ${limit}`
+     WITH series AS (
+       SELECT
+         DATE_TRUNC('day',
+           dd)::date AS date
+       FROM
+         generate_series('2020-09-15'::timestamp,
+           CURRENT_DATE - 1,
+           '1 day'::interval) AS dd
+     ),
+     entities AS (
+       SELECT DISTINCT
+         entity_id
+       FROM
+         daily_new_accounts_per_ecosystem_entity_count
+     ),
+     entity_series AS (
+       SELECT
+         date,
+         entity_id
+       FROM
+         series
+       CROSS JOIN entities
+     ),
+     apps_cumulative_accounts AS (
+       SELECT
+         date,
+         entity_series.entity_id,
+         sum(new_accounts_count) OVER (PARTITION BY entity_series.entity_id ORDER BY date) AS total_accounts
+       FROM
+         entity_series
+         LEFT JOIN daily_new_accounts_per_ecosystem_entity_count ON entity_series.date = daily_new_accounts_per_ecosystem_entity_count.collected_for_day
+           AND entity_series.entity_id = daily_new_accounts_per_ecosystem_entity_count.entity_id
+     ),
+     top_ten_entity AS (
+     SELECT
+       date,
+       entity_id as entity,
+       total_accounts
+     FROM
+       apps_cumulative_accounts
+     WHERE
+       total_accounts IS NOT NULL ORDER BY
+         date DESC,
+         total_accounts DESC
+         ${limit}
+     )
+     SELECT
+       apps_cumulative_accounts.date as collected_for_day,
+       entity_id,
+       apps_cumulative_accounts.total_accounts
+     FROM
+       apps_cumulative_accounts
+     join
+     top_ten_entity
+     on apps_cumulative_accounts.entity_id = top_ten_entity.entity
+     WHERE
+      apps_cumulative_accounts.date >= '${start.toISOString().split('T')[0]}'
+      AND apps_cumulative_accounts.date <= '${end.toISOString().split('T')[0]}'
+      AND apps_cumulative_accounts.total_accounts IS NOT NULL
+    ORDER BY apps_cumulative_accounts.total_accounts DESC;
+     `
 
     //select the database to use.
     const db = network == 'mainnet' ? mainnet_db : testnet_db
@@ -304,40 +342,73 @@ app.prepare().then(async () => {
     const { network } = req.params
 
     // extracting additional query parameters
-    const start = req.query.start ? new Date(req.query.start) : new Date(0) // start of EPOCH
+    const start = req.query.start ? new Date(req.query.start) : new Date('2020-09-15') // start of EPOCH
     const end = req.query.end ? new Date(req.query.end) : new Date() // now
-    const limit = req.query.limit ? parseInt(req.query.limit) : null
+    const limit = req.query.limit ? `limit ${parseInt(req.query.limit)}` : ""
 
     // dates split to create postgres format
     let query = `
-    with app_total_accounts as
-    (
-      select
-        collected_for_day
-        , entity_id
-        , new_accounts_count
-        , row_number() over(partition by entity_id order by collected_for_day) as r_n
-      from
+    WITH series AS (
+      SELECT
+        DATE_TRUNC('day',
+          dd)::date AS date
+      FROM
+        generate_series('${start.toISOString().split('T')[0]}'::timestamp,
+          CURRENT_DATE - 1,
+          '1 day'::interval) AS dd
+    ),
+    entities AS (
+      SELECT DISTINCT
+        entity_id
+      FROM
         daily_new_accounts_per_ecosystem_entity_count
-      where
-        collected_for_day >= '${start.toISOString().split('T')[0]}'
-        and collected_for_day <= '${end.toISOString().split('T')[0]}'
+    ),
+    entity_series AS (
+      SELECT
+        date,
+        entity_id
+      FROM
+        series
+      CROSS JOIN entities
+    ),
+    apps_cumulative_accounts AS (
+      SELECT
+        date,
+        entity_series.entity_id,
+        sum(new_accounts_count) OVER (PARTITION BY entity_series.entity_id ORDER BY date) AS total_accounts
+      FROM
+        entity_series
+        LEFT JOIN daily_new_accounts_per_ecosystem_entity_count ON entity_series.date = daily_new_accounts_per_ecosystem_entity_count.collected_for_day
+          AND entity_series.entity_id = daily_new_accounts_per_ecosystem_entity_count.entity_id
+    ),
+    top_ten_entity AS (
+    SELECT
+      date,
+      entity_id as entity,
+      total_accounts
+    FROM
+      apps_cumulative_accounts
+    WHERE
+      total_accounts IS NOT NULL ORDER BY
+        date DESC,
+        total_accounts DESC
+        ${limit}
     )
-    select
-      collected_for_day
-      , entity_id
-      , sum(
-        case
-        when r_n = 1 then 0
-        else new_accounts_count
-        end) over(order by collected_for_day) as total_accounts
-    from
-      app_total_accounts
-    order by
-      total_accounts desc
+    SELECT
+      apps_cumulative_accounts.date as collected_for_day,
+      entity_id,
+      apps_cumulative_accounts.total_accounts
+    FROM
+      apps_cumulative_accounts
+    join
+    top_ten_entity
+    on apps_cumulative_accounts.entity_id = top_ten_entity.entity
+    WHERE
+      apps_cumulative_accounts.date <= '${end.toISOString().split('T')[0]}' and
+      apps_cumulative_accounts.total_accounts IS NOT NULL
+    ORDER BY apps_cumulative_accounts.total_accounts DESC;
     `
 
-    if (limit !== null) query += `limit ${limit}`
 
     //select the database to use.
     const db = network == 'mainnet' ? mainnet_db : testnet_db
