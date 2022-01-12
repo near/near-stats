@@ -17,20 +17,13 @@ export default function canvasCapture(fileName, element){
   html.style.width = htmlWidth + 'px';
   body.style.width = bodyWidth + 'px';
 
-  [].forEach.call(element.querySelectorAll('.hide-on-capture'), function (el) {
-    el.style.display = 'none';
-  });
 
-  html2canvas(element).then((canvas)=>{
+  html2canvas(element,{backgroundColor:'#ffffff', allowTaint:true}).then((canvas)=>{
     canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})]));
 
     var image = canvas.toDataURL('image/png', 1.0);
     fileName = fileName + " - " + new Date().toString() +'.png'
     saveAs(image, fileName);
-
-    [].forEach.call(element.querySelectorAll('.hide-on-capture'), function (el) {
-      el.style.display = '';
-    });
 
   })
 }

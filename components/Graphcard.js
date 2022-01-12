@@ -131,7 +131,7 @@ export default function GraphCard({ icon, title, children, size = "full", setSel
               {comp}
             </h3>
           </div>
-          <div className="global-flex-inner global-flex-inner-right hide-on-capture">
+          <div className="global-flex-inner global-flex-inner-right" data-html2canvas-ignore="">
             {sel}
             <div className="global-spacer"></div>
             <button className={styles.iconButton} onClick={handleCaptureClick}>
@@ -139,7 +139,7 @@ export default function GraphCard({ icon, title, children, size = "full", setSel
             </button>
           </div>
         </div>
-        <div className={`${styles.switchContainer} hide-on-capture`}>
+        <div className={`${styles.switchContainer}`} data-html2canvas-ignore="">
           {label_switch}
         </div>
         <div>
