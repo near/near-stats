@@ -256,6 +256,7 @@ app.prepare().then(async () => {
     const start = req.query.start ? new Date(req.query.start) : new Date(0) // start of EPOCH
     const end = req.query.end ? new Date(req.query.end) : new Date() // now
     const limit = req.query.limit ? `limit ${parseInt(req.query.limit)}` : ""
+    const app = req.query.app ? `WHERE entity_id = '${req.query.app}'` : ""
 
     // dates split to create postgres format
     let query = `
@@ -273,6 +274,7 @@ app.prepare().then(async () => {
          entity_id
        FROM
          daily_new_accounts_per_ecosystem_entity_count
+       ${app}
      ),
      entity_series AS (
        SELECT
@@ -345,6 +347,7 @@ app.prepare().then(async () => {
     const start = req.query.start ? new Date(req.query.start) : new Date('2020-09-15') // start of EPOCH
     const end = req.query.end ? new Date(req.query.end) : new Date() // now
     const limit = req.query.limit ? `limit ${parseInt(req.query.limit)}` : ""
+    const app = req.query.app ? `WHERE entity_id = '${req.query.app}'` : ""
 
     // dates split to create postgres format
     let query = `
@@ -362,6 +365,7 @@ app.prepare().then(async () => {
         entity_id
       FROM
         daily_new_accounts_per_ecosystem_entity_count
+        ${app}
     ),
     entity_series AS (
       SELECT
