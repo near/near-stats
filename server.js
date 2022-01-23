@@ -208,7 +208,7 @@ app.prepare().then(async () => {
     // extracting a limit parameter from the the url
     const { network } = req.params
 
-    const app = req.query.app ? req.query.app : null
+    const app = req.query.app ? req.query.app.replace(/[&\/\\#,+()$~%.'"^:*?<>{}]/g, '').split(" ")[0] : null
     const contract = req.query.contract ? req.query.contract : false // must have contract_ids
 
     // dates split to create postgres format
@@ -256,7 +256,7 @@ app.prepare().then(async () => {
     const start = req.query.start ? new Date(req.query.start) : new Date(0) // start of EPOCH
     const end = req.query.end ? new Date(req.query.end) : new Date() // now
     const limit = req.query.limit ? `limit ${parseInt(req.query.limit)}` : ""
-    const app = req.query.app ? `WHERE entity_id = '${req.query.app}'` : ""
+    const app = req.query.app ? `WHERE entity_id = '${req.query.app.replace(/[&\/\\#,+()$~%.'"^:*?<>{}]/g, '').split(" ")[0]}'` : ""
 
     // dates split to create postgres format
     let query = `
@@ -347,7 +347,7 @@ app.prepare().then(async () => {
     const start = req.query.start ? new Date(req.query.start) : new Date('2020-09-15') // start of EPOCH
     const end = req.query.end ? new Date(req.query.end) : new Date() // now
     const limit = req.query.limit ? `limit ${parseInt(req.query.limit)}` : ""
-    const app = req.query.app ? `WHERE entity_id = '${req.query.app}'` : ""
+    const app = req.query.app ? `WHERE entity_id = '${req.query.app.replace(/[&\/\\#,+()$~%.'"^:*?<>{}]/g, '').split(" ")[0]}'` : ""
 
     // dates split to create postgres format
     let query = `
